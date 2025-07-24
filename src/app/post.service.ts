@@ -13,11 +13,9 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   loadPosts() {
-    console.log('calling');
     this.http
       .get<Post[]>(this.postURL + '/posts?_limit=10')
       .subscribe((posts) => {
-        console.log('posts', posts);
         this.posts$.next(posts);
       });
   }

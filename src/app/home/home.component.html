@@ -1,7 +1,12 @@
 <ul>
   @for (item of posts$ | async; track $index) {
   <li>
-    {{ item.title }}
+    <a [routerLink]="['/posts', item.id]">
+      <h2 class="line-clamp two-lines">
+        {{ item.title }}
+      </h2>
+      <p class="line-clamp two-lines">{{ item.body }}</p>
+    </a>
   </li>
   }
 </ul>
