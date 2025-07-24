@@ -1,3 +1,15 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { HomeComponent } from './home/home.component';
+import { PostDetailComponent } from './post-detail/post-detail.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'posts/:id',
+    component: PostDetailComponent,
+  },
+];

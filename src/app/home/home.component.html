@@ -1,0 +1,7 @@
+<ul>
+  @for (item of posts$ | async; track $index) {
+  <li>
+    {{ item.title }}
+  </li>
+  }
+</ul>
