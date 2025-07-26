@@ -1,3 +1,7 @@
+<app-modal-host></app-modal-host>
+
+<button (click)="openCreateModal()">create post</button>
+
 <ul>
   @for (item of posts$ | async; track $index) {
   <li>
