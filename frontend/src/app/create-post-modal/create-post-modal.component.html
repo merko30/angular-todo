@@ -1,0 +1,24 @@
+<div class="backdrop">
+  <div class="modal-box" role="dialog">
+    <h2>Create Post</h2>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <app-field
+        label="Title"
+        name="title"
+        placeholder="Enter post title"
+        [error]="errors['title']"
+      >
+        <input ngModel name="title" class="field-input" />
+      </app-field>
+      <app-field
+        label="Body"
+        name="body"
+        placeholder="Enter post body"
+        [error]="errors['body']"
+      >
+        <textarea ngModel name="body" rows="5" class="field-input"></textarea>
+      </app-field>
+      <button class="submit-btn" type="submit">Submit</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.field-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+}
+
+.field-error {
+  color: #e53e3e;
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+}

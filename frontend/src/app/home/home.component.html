@@ -1,0 +1,18 @@
+<app-modal-host></app-modal-host>
+
+<div class="flex justify-end mb-4">
+  <app-button (click)="openCreateModal()">create post</app-button>
+</div>
+
+<ul>
+  @for (item of posts$ | async; track $index) {
+  <li>
+    <a [routerLink]="['/posts', item.id]">
+      <h2 class="line-clamp two-lines">
+        {{ item.title }}
+      </h2>
+      <p class="line-clamp two-lines">{{ item.body }}</p>
+    </a>
+  </li>
+  }
+</ul>
