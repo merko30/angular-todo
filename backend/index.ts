@@ -1,12 +1,22 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
+import { APIError } from "better-auth/api";
 
 const app = express();
 const port = 3005;
 
-app.all("/api/auth/*splat", toNodeHandler(auth));
+app.use(
+  cors({
+    origin: "http://localhost:4200", // Replace with your frontend's origin
+    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
+
+app.all("/api/auth/{*any}", toNodeHandler(auth));
 
 app.get("/api/me", async (req, res) => {
   const session = await auth.api.getSession({

@@ -1,0 +1,53 @@
+<div class="max-w-md mx-auto mt-12 p-6 bg-white rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">Register</h2>
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <div *ngIf="responseError" class="text-red-600 mb-2">
+      {{ responseError }}
+    </div>
+    <app-field
+      label="Name"
+      name="name"
+      [error]="errors['name']"
+      placeholder="Enter your name"
+    >
+      <input
+        [(ngModel)]="name"
+        name="name"
+        type="text"
+        class="w-full border rounded px-3 py-2"
+        required
+      />
+    </app-field>
+    <app-field
+      label="Email"
+      name="email"
+      [error]="errors['email']"
+      placeholder="Enter your email"
+    >
+      <input
+        [(ngModel)]="email"
+        name="email"
+        type="email"
+        class="w-full border rounded px-3 py-2"
+        required
+      />
+    </app-field>
+    <app-field
+      label="Password"
+      name="password"
+      [error]="errors['password']"
+      placeholder="Enter your password"
+    >
+      <input
+        [(ngModel)]="password"
+        name="password"
+        type="password"
+        class="w-full border rounded px-3 py-2"
+        required
+      />
+    </app-field>
+    <app-button [disabled]="loading" className="w-full">
+      {{ loading ? "Registering..." : "Register" }}
+    </app-button>
+  </form>
+</div>

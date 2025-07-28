@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge';
 export class ButtonComponent {
   onClick = output();
   className = input<string>();
+  disabled = input<boolean>();
 
   get buttonClass() {
     return twMerge(
