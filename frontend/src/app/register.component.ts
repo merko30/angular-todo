@@ -10,6 +10,7 @@ import { register } from '../store/auth/actions';
 import { Observable, of } from 'rxjs';
 import { AppState } from '../store';
 import { AlertComponent } from './shared/alert/alert.component';
+import { errorSelector, loadingSelector } from '../store/auth/selectors';
 
 @Component({
   selector: 'app-register',
@@ -39,8 +40,8 @@ export class RegisterComponent {
   });
 
   constructor(private store: Store<AppState>) {
-    this.responseError$ = this.store.select((state) => state.auth.error);
-    this.loading$ = this.store.select((state) => state.auth.loading);
+    this.responseError$ = this.store.select(errorSelector);
+    this.loading$ = this.store.select(loadingSelector);
   }
 
   onSubmit(form: NgForm) {

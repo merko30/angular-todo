@@ -16,11 +16,13 @@ export const loginEffect = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(login.type),
-      switchMap((action) =>
-        authService.login(action.data).pipe(
+      switchMap(({ type, ...data }) =>
+        authService.login(data).pipe(
           map(() => loginSuccess()),
           catchError((error) =>
-            of(loginFail({ error: error.message ?? 'Invalid credentials' }))
+            of(
+              loginFail({ error: error.error.message ?? 'Invalid credentials' })
+            )
           )
         )
       )

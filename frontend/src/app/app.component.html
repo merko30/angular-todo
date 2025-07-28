@@ -4,9 +4,23 @@
       Posts
     </a>
     <nav class="float-right space-x-4">
-      <a routerLink="/login" class="text-primary hover:underline">Login</a>
-      <a routerLink="/register" class="text-primary hover:underline"
+      <a
+        *ngIf="!(loggedIn$ | async)"
+        routerLink="/login"
+        class="text-primary hover:underline"
+        >Login</a
+      >
+      <a
+        *ngIf="!(loggedIn$ | async)"
+        routerLink="/register"
+        class="text-primary hover:underline"
         >Register</a
+      >
+      <a
+        *ngIf="loggedIn$ | async"
+        routerLink="/register"
+        class="text-primary hover:underline"
+        >Hello</a
       >
     </nav>
   </div>
