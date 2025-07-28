@@ -18,7 +18,7 @@ export class AuthService {
   register(data: {
     name: string;
     email: string;
-    // password: string;
+    password: string;
   }): Observable<any> {
     // Better Auth register endpoint is /api/auth/register
     return this.http.post(`${this.apiUrl}/sign-up/email`, data, {

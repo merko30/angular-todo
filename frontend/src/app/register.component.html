@@ -1,9 +1,9 @@
 <div class="max-w-md mx-auto mt-12 p-6 bg-white rounded shadow">
   <h2 class="text-2xl font-bold mb-4">Register</h2>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-    <div *ngIf="responseError" class="text-red-600 mb-2">
-      {{ responseError }}
-    </div>
+    <app-alert *ngIf="responseError$ | async" className="mb-2">
+      {{ responseError$ | async }}
+    </app-alert>
     <app-field
       label="Name"
       name="name"
@@ -46,8 +46,8 @@
         required
       />
     </app-field>
-    <app-button [disabled]="loading" className="w-full">
-      {{ loading ? "Registering..." : "Register" }}
+    <app-button [disabled]="!!(loading$ | async)" className="w-full">
+      {{ (loading$ | async) ? "Registering..." : "Register" }}
     </app-button>
   </form>
 </div>

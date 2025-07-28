@@ -5,6 +5,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import z from 'zod';
 import { ButtonComponent } from './shared/button/button.component';
+import { Store } from '@ngrx/store';
+import { login } from '../store/auth/actions';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +23,11 @@ export class LoginComponent {
   loading = false;
 
   private schema = z.object({
-    email: z.string().email('Invalid email'),
+    email: z.email('Invalid email'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
   });
 
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store) {}
 
   onSubmit(form: NgForm) {
     this.errors = {};
@@ -37,12 +39,13 @@ export class LoginComponent {
       return;
     }
     this.loading = true;
-    this.auth.login(form.value).subscribe({
-      next: () => (window.location.href = '/'),
-      error: (err) => {
-        this.responseError = err.error?.message || 'Login failed';
-        this.loading = false;
-      },
-    });
+    this.store.dispatch(
+      login(
+        form.value as {
+          email: string;
+          password: string;
+        }
+      )
+    );
   }
 }
