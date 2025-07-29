@@ -8,14 +8,13 @@ import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 })
 export class PostService {
   posts$ = new BehaviorSubject<Post[]>([]);
-  postURL: string = 'https://jsonplaceholder.typicode.com/posts';
+  // todo: read from config
+  postURL: string = 'http://localhost:3005/api/posts';
 
   constructor(private http: HttpClient) {}
 
-  loadPosts(): void {
-    this.http.get<Post[]>(this.postURL + '?_limit=10').subscribe((posts) => {
-      this.posts$.next(posts);
-    });
+  loadPosts() {
+    return this.http.get<{ posts: Post[] }>(this.postURL);
   }
 
   loadPost(id: string): Observable<Post> {

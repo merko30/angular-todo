@@ -6,16 +6,18 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authReducer } from '../store/auth/reducer';
+import { reducer as postReducer } from '../store/posts/reducer';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from '../store/auth/effects';
+import * as postsEffects from '../store/posts/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-    provideStore({ auth: authReducer }),
-    provideEffects(authEffects),
+    provideStore({ auth: authReducer, posts: postReducer }),
+    provideEffects(authEffects, postsEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       // logOnly: !isDevMode(), // Restrict extension to log-only mode

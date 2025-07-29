@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
+import { db } from "./db";
+import { post } from "./db/schema";
 
 const app = express();
 const port = 3005;
@@ -29,6 +31,16 @@ app.get("/api/me", async (req, res) => {
 app.use(express.json());
 
 app.get("/", (_, res) => res.json({ ok: true }));
+
+app.get("/api/posts", async (req, res) => {
+  const posts = await db.select().from(post);
+
+  console.log("posts", posts);
+
+  res.json({
+    posts,
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
