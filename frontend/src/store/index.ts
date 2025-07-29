@@ -1,4 +1,4 @@
-import { State } from './auth/reducer';
+import { State } from './auth/types';
 
 export type AppState = {
   auth: State;

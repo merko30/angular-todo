@@ -3,14 +3,18 @@ import { AuthService } from '../../app/auth.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import {
+  getUserInfo,
+  getUserInfoFailure,
+  getUserInfoSuccess,
   login,
-  loginFail,
+  loginFailure,
   loginSuccess,
   register,
-  registerFail,
+  registerFailure,
   registerSuccess,
 } from './actions';
 import { catchError, map, of, switchMap } from 'rxjs';
+import { User } from './types';
 
 export const loginEffect = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
@@ -21,7 +25,9 @@ export const loginEffect = createEffect(
           map(() => loginSuccess()),
           catchError((error) =>
             of(
-              loginFail({ error: error.error.message ?? 'Invalid credentials' })
+              loginFailure({
+                error: error.error.message ?? 'Invalid credentials',
+              })
             )
           )
         )
@@ -41,11 +47,38 @@ export const registerEffect = createEffect(
           map(() => registerSuccess()),
           catchError((error) =>
             of(
-              registerFail({
+              registerFailure({
                 error: error?.error?.message ?? 'Invalid credentials',
               })
             )
           )
+        );
+      })
+    );
+  },
+  { functional: true }
+);
+
+export const getUserInfoEffect = createEffect(
+  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+    return actions$.pipe(
+      ofType(getUserInfo.type),
+      switchMap(() => {
+        return authService.getUserInfo().pipe(
+          map((data) => {
+            console.log(data);
+
+            return getUserInfoSuccess(data as { user: User });
+          }),
+          catchError((error) => {
+            console.log(error);
+
+            return of(
+              getUserInfoFailure({
+                error: error?.error?.message ?? 'Failed to load user',
+              })
+            );
+          })
         );
       })
     );

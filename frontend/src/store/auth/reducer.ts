@@ -1,23 +1,22 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  getUserInfo,
+  getUserInfoFailure,
+  getUserInfoSuccess,
   login,
-  loginFail,
+  loginFailure,
   loginSuccess,
   register,
-  registerFail,
+  registerFailure,
   registerSuccess,
 } from './actions';
-
-export type State = {
-  loggedIn: boolean;
-  loading: boolean;
-  error: string | null;
-};
+import { State } from './types';
 
 export const initialState: State = {
   loggedIn: false,
   loading: false,
   error: null,
+  user: null,
 };
 
 export const authReducer = createReducer(
@@ -32,7 +31,7 @@ export const authReducer = createReducer(
     loading: false,
     error: null,
   })),
-  on(registerFail, (state, action) => ({
+  on(registerFailure, (state, action) => ({
     ...state,
     loading: false,
     error: action.error,
@@ -48,7 +47,24 @@ export const authReducer = createReducer(
     error: null,
     loggedIn: true,
   })),
-  on(loginFail, (state, action) => ({
+  on(loginFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  })),
+  on(getUserInfo, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(getUserInfoSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    error: null,
+    loggedIn: true,
+    user: action.user,
+  })),
+  on(getUserInfoFailure, (state, action) => ({
     ...state,
     loading: false,
     error: action.error,

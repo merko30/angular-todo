@@ -4,24 +4,17 @@
       Posts
     </a>
     <nav class="float-right space-x-4">
-      <a
-        *ngIf="!(loggedIn$ | async)"
-        routerLink="/login"
-        class="text-primary hover:underline"
-        >Login</a
-      >
-      <a
-        *ngIf="!(loggedIn$ | async)"
-        routerLink="/register"
-        class="text-primary hover:underline"
+      @if (loading$ | async){
+      <span class="inline-block w-20 h-5 bg-gray-100"></span>
+      <span class="inline-block w-20 h-5 bg-gray-100"></span>
+      } @if (!(loggedIn$ | async) && !(loading$ | async)){
+      <a routerLink="/login" class="text-primary hover:underline">Login</a>
+      <a routerLink="/register" class="text-primary hover:underline"
         >Register</a
       >
-      <a
-        *ngIf="loggedIn$ | async"
-        routerLink="/register"
-        class="text-primary hover:underline"
-        >Hello</a
-      >
+      } @if ((loggedIn$ | async) ) {
+      <a routerLink="/register" class="text-primary hover:underline">Hello</a>
+      }
     </nav>
   </div>
 </header>
