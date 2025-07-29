@@ -5,6 +5,7 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import { db } from "./db";
 import { post } from "./db/schema";
+import { uuidv7 } from "uuidv7";
 
 const app = express();
 const port = 3005;
@@ -39,6 +40,30 @@ app.get("/api/posts", async (req, res) => {
 
   res.json({
     posts,
+  });
+});
+
+app.post("/api/posts", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+  if (!session) {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+
+  console.log(req.body);
+  const createdPost = await db
+    .insert(post)
+    .values({
+      ...req.body,
+      id: uuidv7(),
+      slug: req.body.title.toLowerCase().replace(" ", "-"),
+      userId: session?.user.id,
+    })
+    .returning();
+
+  res.json({
+    post: createdPost,
   });
 });
 

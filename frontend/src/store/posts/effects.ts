@@ -1,7 +1,14 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PostService } from '../../app/post.service';
-import { loadPosts, loadPostsFailure, loadPostsSuccess } from './actions';
+import {
+  loadPosts,
+  loadPostsFailure,
+  loadPostsSuccess,
+  createPost,
+  createPostFailure,
+  createPostSuccess,
+} from './actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 export const loadPostsEffect = createEffect(
@@ -22,6 +29,30 @@ export const loadPostsEffect = createEffect(
             return of(
               loadPostsFailure({
                 error: error?.message ?? 'Failed to load posts',
+              })
+            );
+          })
+        );
+      })
+    ),
+  { functional: true }
+);
+
+export const createPostEffect = createEffect(
+  (actions$ = inject(Actions), postService = inject(PostService)) =>
+    actions$.pipe(
+      ofType(createPost.type),
+      switchMap((action) => {
+        const { type, ...data } = action;
+
+        return postService.createPost(data).pipe(
+          map((data) => {
+            return createPostSuccess({ post: data.post });
+          }),
+          catchError((error) => {
+            return of(
+              createPostFailure({
+                error: error?.message ?? 'Failed to create the post',
               })
             );
           })

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './types/post';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +28,8 @@ export class PostService {
   }
 
   createPost(post: Omit<Post, 'id'>) {
-    return this.http.post<Post>(this.postURL, post).pipe(
-      tap((newPost) => {
-        const currentPosts = this.posts$.getValue();
-        this.posts$.next([newPost, ...currentPosts]);
-      }),
-      catchError((error) => of(error))
-    );
+    return this.http.post<{ post: Post }>(this.postURL, post, {
+      withCredentials: true,
+    });
   }
 }

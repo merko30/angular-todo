@@ -10,3 +10,16 @@ export const loadPostsFailure = createAction(
   '[Posts] LoadPostsFailed',
   props<{ error: string }>()
 );
+
+export const createPost = createAction(
+  '[Posts] CreatePost',
+  props<{ post: Omit<Post, 'id'> }>()
+);
+export const createPostSuccess = createAction(
+  '[Posts] CreatePostSucceeded',
+  props<{ post: Post }>()
+);
+export const createPostFailure = createAction(
+  '[Posts] CreatePostFailed',
+  props<{ error: string }>()
+);
