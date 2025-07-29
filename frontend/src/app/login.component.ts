@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FieldComponent } from './field/field.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import z from 'zod';
 import { ButtonComponent } from './shared/button/button.component';
 import { Store } from '@ngrx/store';
-import { login } from '../store/auth/actions';
+import { clearError, login } from '../store/auth/actions';
 import { Observable } from 'rxjs';
 import { errorSelector, loadingSelector } from '../store/auth/selectors';
 import { AppState } from '../store';
@@ -31,6 +31,7 @@ export class LoginComponent {
   errors: Record<string, string> = {};
   loading$: Observable<boolean>;
   responseError$: Observable<string | null>;
+  destroyRef = inject(DestroyRef);
 
   private schema = z.object({
     email: z.email('Invalid email'),
@@ -40,6 +41,10 @@ export class LoginComponent {
   constructor(private store: Store<AppState>) {
     this.loading$ = this.store.select(loadingSelector);
     this.responseError$ = this.store.select(errorSelector);
+
+    this.destroyRef.onDestroy(() => {
+      this.store.dispatch(clearError());
+    });
   }
 
   onSubmit(form: NgForm) {

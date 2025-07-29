@@ -37,3 +37,5 @@ export const logoutFailure = createAction(
   '[Auth] RegisterFailed',
   props<{ error: string }>()
 );
+
+export const clearError = createAction('[Auth] Clear error');

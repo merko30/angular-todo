@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { FieldComponent } from './field/field.component';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import z from 'zod';
 import { ButtonComponent } from './shared/button/button.component';
 import { State, Store } from '@ngrx/store';
-import { register } from '../store/auth/actions';
+import { clearError, register } from '../store/auth/actions';
 import { Observable, of } from 'rxjs';
 import { AppState } from '../store';
 import { AlertComponent } from './shared/alert/alert.component';
@@ -32,6 +32,7 @@ export class RegisterComponent {
   errors: Record<string, string> = {};
   responseError$: Observable<string | null>;
   loading$: Observable<boolean> = of(false);
+  destroyRef = inject(DestroyRef);
 
   private schema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -42,6 +43,10 @@ export class RegisterComponent {
   constructor(private store: Store<AppState>) {
     this.responseError$ = this.store.select(errorSelector);
     this.loading$ = this.store.select(loadingSelector);
+
+    this.destroyRef.onDestroy(() => {
+      this.store.dispatch(clearError());
+    });
   }
 
   onSubmit(form: NgForm) {

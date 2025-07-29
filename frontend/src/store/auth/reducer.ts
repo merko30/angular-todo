@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  clearError,
   getUserInfo,
   getUserInfoFailure,
   getUserInfoSuccess,
@@ -87,5 +88,6 @@ export const authReducer = createReducer(
     ...state,
     loading: false,
     error: action.error,
-  }))
+  })),
+  on(clearError, (state) => ({ ...state, error: null }))
 );
