@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
-import { APIError } from "better-auth/api";
 
 const app = express();
 const port = 3005;

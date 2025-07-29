@@ -9,6 +9,9 @@ import {
   login,
   loginFailure,
   loginSuccess,
+  logout,
+  logoutFailure,
+  logoutSuccess,
   register,
   registerFailure,
   registerSuccess,
@@ -66,8 +69,6 @@ export const getUserInfoEffect = createEffect(
       switchMap(() => {
         return authService.getUserInfo().pipe(
           map((data) => {
-            console.log(data);
-
             return getUserInfoSuccess(data as { user: User });
           }),
           catchError((error) => {
@@ -76,6 +77,28 @@ export const getUserInfoEffect = createEffect(
             return of(
               getUserInfoFailure({
                 error: error?.error?.message ?? 'Failed to load user',
+              })
+            );
+          })
+        );
+      })
+    );
+  },
+  { functional: true }
+);
+
+export const logoutEffect = createEffect(
+  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+    return actions$.pipe(
+      ofType(logout.type),
+      switchMap(() => {
+        return authService.logout().pipe(
+          map(() => logoutSuccess()),
+          catchError((error) => {
+            console.log(error);
+            return of(
+              logoutFailure({
+                error: error?.error?.message ?? 'Logout failed',
               })
             );
           })

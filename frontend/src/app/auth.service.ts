@@ -29,4 +29,12 @@ export class AuthService {
   getUserInfo() {
     return this.http.get(`${this.apiUrl}/me`, { withCredentials: true });
   }
+
+  logout() {
+    return this.http.post(
+      `${this.apiUrl}/auth/sign-out`,
+      {},
+      { withCredentials: true }
+    );
+  }
 }

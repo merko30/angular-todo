@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../store';
-import { getUserInfo } from '../store/auth/actions';
+import { getUserInfo, logout as logoutAction } from '../store/auth/actions';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AsyncPipe],
+  imports: [RouterOutlet, AsyncPipe, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -23,5 +23,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(getUserInfo());
+  }
+
+  logout(): void {
+    this.store.dispatch(logoutAction());
   }
 }
