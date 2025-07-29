@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { twMerge } from 'tailwind-merge';
 
 @Component({
   selector: 'app-field',
@@ -14,4 +15,9 @@ export class FieldComponent {
   @Input() error: string | null = null;
   @Input() placeholder: string = '';
   @Input() name: string = '';
+  @Input() className: string = '';
+
+  get containerClass() {
+    return twMerge('mb-2', this.className);
+  }
 }

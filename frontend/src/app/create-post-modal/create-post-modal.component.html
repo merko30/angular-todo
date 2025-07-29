@@ -1,6 +1,6 @@
 <div class="backdrop">
   <div class="modal-box" role="dialog">
-    <h2>Create Post</h2>
+    <h2 class="text-2xl font-semibold mb-4">Create Post</h2>
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
       <app-field
         label="Title"
@@ -8,7 +8,11 @@
         placeholder="Enter post title"
         [error]="errors['title']"
       >
-        <input ngModel name="title" class="field-input" />
+        <input
+          ngModel
+          name="title"
+          class="w-full border border-gray-200 px-4 py-2 rounded-md"
+        />
       </app-field>
       <app-field
         label="Body"
@@ -16,9 +20,14 @@
         placeholder="Enter post body"
         [error]="errors['body']"
       >
-        <textarea ngModel name="body" rows="5" class="field-input"></textarea>
+        <textarea
+          ngModel
+          name="body"
+          rows="5"
+          class="w-full border border-gray-200 px-4 py-2 rounded-md"
+        ></textarea>
       </app-field>
-      <button class="submit-btn" type="submit">Submit</button>
+      <app-button type="submit">Submit</app-button>
     </form>
   </div>
 </div>

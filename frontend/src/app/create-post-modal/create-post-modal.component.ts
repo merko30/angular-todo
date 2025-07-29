@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import z from 'zod';
 import { PostService } from '../post.service';
 import { ModalService } from '../modal.service';
+import { ButtonComponent } from '../shared/button/button.component';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -11,7 +12,7 @@ const schema = z.object({
 });
 @Component({
   selector: 'app-create-post-modal',
-  imports: [FieldComponent, FormsModule],
+  imports: [FieldComponent, FormsModule, ButtonComponent],
   templateUrl: './create-post-modal.component.html',
   styleUrls: ['./create-post-modal.component.css'],
 })

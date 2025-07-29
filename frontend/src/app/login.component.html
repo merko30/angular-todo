@@ -15,7 +15,7 @@
         [(ngModel)]="email"
         name="email"
         type="email"
-        class="w-full border rounded px-3 py-2"
+        class="w-full border border-gray-200 rounded px-3 py-2"
         required
       />
     </app-field>
@@ -24,12 +24,13 @@
       name="password"
       [error]="errors['password']"
       placeholder="Enter your password"
+      className="mb-4"
     >
       <input
         [(ngModel)]="password"
         name="password"
         type="password"
-        class="w-full border rounded px-3 py-2"
+        class="w-full border border-gray-200 rounded px-3 py-2"
         required
       />
     </app-field>

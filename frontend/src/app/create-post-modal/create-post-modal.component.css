@@ -7,7 +7,7 @@
 
 .modal-box {
   padding: 1rem;
-  min-width: 450px;
+  min-width: 550px;
   background-color: white;
   border-radius: 0.5rem;
   position: fixed;
@@ -15,42 +15,4 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
-
-.submit-btn {
-  background-color: deepskyblue;
-  border-radius: 0.5rem;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  color: white;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.field-input {
-  padding: 0.7rem 1rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-  outline: none;
-}
-
-.field-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.field-input:focus {
-  border-color: #3182ce;
-}
-
-.field-error {
-  color: #e53e3e;
-  font-size: 0.95rem;
-  margin-top: 0.4rem;
-}
-
-.field-error-input {
-  border-color: #e53e3e;
 }

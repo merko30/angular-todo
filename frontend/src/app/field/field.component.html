@@ -1,5 +1,7 @@
-<div class="field-container">
-  <label [attr.for]="name" class="field-label">{{ label }}</label>
-  <ng-content class="field-input"></ng-content>
-  <div *ngIf="error" class="field-error">{{ error }}</div>
+<div [class]="containerClass">
+  <label [attr.for]="name" class="text-sm text-gray-800 mb-2">{{
+    label
+  }}</label>
+  <ng-content></ng-content>
+  <div *ngIf="error" class="text-red-600 font-medium text-sm">{{ error }}</div>
 </div>
