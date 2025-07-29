@@ -5,6 +5,7 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
+import { authGuard, nonAuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
   {
     path: 'posts/:id',
     component: PostDetailComponent,
+    canActivate: [authGuard],
   },
   {
     path: '404',
@@ -22,10 +24,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [nonAuthGuard],
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [nonAuthGuard],
   },
   {
     path: '**',

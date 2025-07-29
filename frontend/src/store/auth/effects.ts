@@ -16,16 +16,22 @@ import {
   registerFailure,
   registerSuccess,
 } from './actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { User } from './types';
+import { Router } from '@angular/router';
 
 export const loginEffect = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+  (
+    actions$ = inject(Actions),
+    authService = inject(AuthService),
+    router = inject(Router)
+  ) => {
     return actions$.pipe(
       ofType(login.type),
       switchMap(({ type, ...data }) =>
         authService.login(data).pipe(
           map(() => loginSuccess()),
+          tap(() => router.navigate(['/'])),
           catchError((error) =>
             of(
               loginFailure({
@@ -71,15 +77,13 @@ export const getUserInfoEffect = createEffect(
           map((data) => {
             return getUserInfoSuccess(data as { user: User });
           }),
-          catchError((error) => {
-            console.log(error);
-
-            return of(
+          catchError((error) =>
+            of(
               getUserInfoFailure({
                 error: error?.error?.message ?? 'Failed to load user',
               })
-            );
-          })
+            )
+          )
         );
       })
     );
