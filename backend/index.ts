@@ -51,8 +51,7 @@ app.post("/api/posts", async (req, res) => {
     res.status(401).json({ error: "Unauthorized" });
   }
 
-  console.log(req.body);
-  const createdPost = await db
+  const [createdPost] = await db
     .insert(post)
     .values({
       ...req.body,
@@ -61,6 +60,10 @@ app.post("/api/posts", async (req, res) => {
       userId: session?.user.id,
     })
     .returning();
+
+  if (!post) {
+    res.status(400).json({ error: "Failed to create the post" });
+  }
 
   res.json({
     post: createdPost,

@@ -9,7 +9,8 @@ import {
   createPostFailure,
   createPostSuccess,
 } from './actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { ModalService } from '../../app/modal.service';
 
 export const loadPostsEffect = createEffect(
   (actions$ = inject(Actions), postService = inject(PostService)) =>
@@ -39,7 +40,11 @@ export const loadPostsEffect = createEffect(
 );
 
 export const createPostEffect = createEffect(
-  (actions$ = inject(Actions), postService = inject(PostService)) =>
+  (
+    actions$ = inject(Actions),
+    postService = inject(PostService),
+    modalService = inject(ModalService)
+  ) =>
     actions$.pipe(
       ofType(createPost.type),
       switchMap((action) => {
@@ -47,8 +52,10 @@ export const createPostEffect = createEffect(
 
         return postService.createPost(data).pipe(
           map((data) => {
+            console.log(data);
             return createPostSuccess({ post: data.post });
           }),
+          tap(() => modalService.close()),
           catchError((error) => {
             return of(
               createPostFailure({
