@@ -63,11 +63,51 @@ export const verification = pgTable("verification", {
 export const post = pgTable("post", {
   id: uuid().primaryKey(),
   title: text("title").notNull(),
+  subtitle: text("subtitle"),
   body: text("body").notNull(),
   slug: text("slug").notNull(),
+  image: text("image"),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").$defaultFn(
+    () => /* @__PURE__ */ new Date()
+  ),
+  updatedAt: timestamp("updated_at").$defaultFn(
+    () => /* @__PURE__ */ new Date()
+  ),
+});
+
+export const tag = pgTable("tag", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  createdAt: timestamp("created_at").$defaultFn(
+    () => /* @__PURE__ */ new Date()
+  ),
+  updatedAt: timestamp("updated_at").$defaultFn(
+    () => /* @__PURE__ */ new Date()
+  ),
+});
+
+export const postTag = pgTable("postTag", {
+  id: text("id").primaryKey(),
+  tagId: text("tag_id")
+    .notNull()
+    .references(() => tag.id, { onDelete: "cascade" }),
+  postId: uuid("post_id")
+    .notNull()
+    .references(() => post.id, { onDelete: "no action" }),
+});
+
+export const comment = pgTable("comment", {
+  id: uuid().primaryKey().defaultRandom(),
+  text: text("text").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  postId: uuid("post_id")
+    .notNull()
+    .references(() => post.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").$defaultFn(
     () => /* @__PURE__ */ new Date()
   ),
