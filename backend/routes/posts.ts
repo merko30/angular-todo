@@ -8,10 +8,10 @@ import { authMiddleware } from "../lib/middleware";
 
 const router = Router();
 
-router.get("/", authMiddleware, async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   const posts = await db.select().from(post);
 
-  res.json({
+  res.status(200).json({
     posts,
   });
 });
