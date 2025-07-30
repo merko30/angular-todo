@@ -1,17 +1,26 @@
 import { Component } from '@angular/core';
-import { FieldComponent } from '../field/field.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import z from 'zod';
-import { PostService } from '../post.service';
-import { ModalService } from '../modal.service';
-import { ButtonComponent } from '../shared/button/button.component';
 import { Store } from '@ngrx/store';
+
+import { FieldComponent } from '../field/field.component';
+import { ButtonComponent } from '../shared/button/button.component';
 import { AppState } from '../../store';
 import { createPost } from '../../store/posts/actions';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
   body: z.string().min(1, 'Body is required'),
+  tags: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^([a-zA-Z0-9-]+)(\s*,\s*[a-zA-Z0-9-]+)*$/.test(val),
+      {
+        message:
+          'Tags must be comma-separated words (letters, numbers, or dashes)',
+      }
+    ),
 });
 @Component({
   selector: 'app-create-post-modal',
@@ -22,10 +31,7 @@ const schema = z.object({
 export class CreatePostModalComponent {
   errors: Record<string, string> = {};
 
-  constructor(
-    private store: Store<AppState>,
-    private modalService: ModalService
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   onSubmit(form: NgForm) {
     this.errors = {};

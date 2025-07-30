@@ -27,6 +27,21 @@
           class="w-full border border-gray-200 px-4 py-2 rounded-md"
         ></textarea>
       </app-field>
+      <app-field
+        label="Tags"
+        name="tags"
+        placeholder="Post tags"
+        [error]="errors['tags']"
+      >
+        <input
+          ngModel
+          name="tags"
+          class="w-full border border-gray-200 px-4 py-2 rounded-md"
+        />
+        <span class="text-gray-600 text-sm"
+          >Separate tags by comma e.g health, fitness</span
+        >
+      </app-field>
       <app-button type="submit">Submit</app-button>
     </form>
   </div>

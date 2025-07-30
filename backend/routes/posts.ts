@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { uuidv7 } from "uuidv7";
 
 import { db } from "../db";
-import { post } from "../db/schema";
+import { post, tag } from "../db/schema";
 import { authMiddleware } from "../lib/middleware";
 
 const router = Router();
@@ -17,6 +17,20 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", authMiddleware, async (req: Request, res: Response) => {
+  const { tags, ...postFields } = req.body;
+
+  await Promise.all(
+    tags.split(",").map((name: string) =>
+      db
+        .insert(tag)
+        .values({
+          id: "1",
+          name: name.trim(),
+        })
+        .onConflictDoNothing()
+    )
+  );
+
   const [createdPost] = await db
     .insert(post)
     .values({
