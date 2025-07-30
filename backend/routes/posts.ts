@@ -24,7 +24,6 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
       db
         .insert(tag)
         .values({
-          id: "1",
           name: name.trim(),
         })
         .onConflictDoNothing()

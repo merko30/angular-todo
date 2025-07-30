@@ -15,6 +15,13 @@
       "when": 1753879524164,
       "tag": "0001_tags-comments",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753902668298,
+      "tag": "0002_table-primary-keys",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,11 @@
-import { pgTable, text, timestamp, boolean, uuid } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  uuid,
+  serial,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -79,7 +86,7 @@ export const post = pgTable("post", {
 });
 
 export const tag = pgTable("tag", {
-  id: text("id").primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
   createdAt: timestamp("created_at").$defaultFn(
     () => /* @__PURE__ */ new Date()
@@ -90,8 +97,8 @@ export const tag = pgTable("tag", {
 });
 
 export const postTag = pgTable("postTag", {
-  id: text("id").primaryKey(),
-  tagId: text("tag_id")
+  id: serial("id").primaryKey(),
+  tagId: serial("tag_id")
     .notNull()
     .references(() => tag.id, { onDelete: "cascade" }),
   postId: uuid("post_id")
@@ -100,7 +107,7 @@ export const postTag = pgTable("postTag", {
 });
 
 export const comment = pgTable("comment", {
-  id: uuid().primaryKey().defaultRandom(),
+  id: serial("id").primaryKey(),
   text: text("text").notNull(),
   userId: text("user_id")
     .notNull()
