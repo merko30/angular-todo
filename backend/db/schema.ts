@@ -6,6 +6,7 @@ import {
   uuid,
   serial,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -122,3 +123,46 @@ export const comment = pgTable("comment", {
     () => /* @__PURE__ */ new Date()
   ),
 });
+
+// Relations
+export const userRelations = relations(user, ({ one, many }) => ({
+  posts: many(post),
+  comments: many(comment),
+  sessions: many(session),
+  accounts: many(account),
+}));
+
+export const postRelations = relations(post, ({ one, many }) => ({
+  user: one(user, {
+    fields: [post.userId],
+    references: [user.id],
+  }),
+  comments: many(comment),
+  postTags: many(postTag),
+}));
+
+export const commentRelations = relations(comment, ({ one }) => ({
+  user: one(user, {
+    fields: [comment.userId],
+    references: [user.id],
+  }),
+  post: one(post, {
+    fields: [comment.postId],
+    references: [post.id],
+  }),
+}));
+
+export const tagRelations = relations(tag, ({ many }) => ({
+  postTags: many(postTag),
+}));
+
+export const postTagRelations = relations(postTag, ({ one }) => ({
+  post: one(post, {
+    fields: [postTag.postId],
+    references: [post.id],
+  }),
+  tag: one(tag, {
+    fields: [postTag.tagId],
+    references: [tag.id],
+  }),
+}));

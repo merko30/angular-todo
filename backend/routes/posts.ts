@@ -1,39 +1,22 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { uuidv7 } from "uuidv7";
-
 import { db } from "../db";
 import { post, postTag, tag } from "../db/schema";
 import { authMiddleware } from "../lib/middleware";
-import { eq, notInArray } from "drizzle-orm";
+import { notInArray } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
-  const result = await db
-    .select()
-    .from(post)
-    .leftJoin(postTag, eq(post.id, postTag.postId))
-    .leftJoin(tag, eq(postTag.tagId, tag.id));
+  const result = await db.query.post.findMany({
+    with: { postTags: { with: { tag: true } } },
+  });
 
-  const grouped = result.reduce((acc, row) => {
-    const post = acc[row.post.id] ?? {
-      ...row.post,
-      tags: [],
-    };
-
-    if (row.tag && row.tag.id && row.tag.name) {
-      post.tags.push({ id: row.tag.id.toString(), name: row.tag.name });
-    }
-
-    acc[row.post.id] = post;
-    return acc;
-  }, {} as Record<string, { id: string; title: string; tags: { id: string; name: string }[] }>);
-
-  const posts = Object.values(grouped);
+  console.log(result);
 
   res.status(200).json({
-    posts,
+    posts: result,
   });
 });
 
