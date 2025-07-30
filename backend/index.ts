@@ -2,10 +2,9 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
+
 import { auth } from "./lib/auth";
-import { db } from "./db";
-import { post } from "./db/schema";
-import { uuidv7 } from "uuidv7";
+import postsRouter from "./routes/posts";
 
 const app = express();
 const port = 3005;
@@ -33,42 +32,7 @@ app.use(express.json());
 
 app.get("/", (_, res) => res.json({ ok: true }));
 
-app.get("/api/posts", async (req, res) => {
-  const posts = await db.select().from(post);
-
-  console.log("posts", posts);
-
-  res.json({
-    posts,
-  });
-});
-
-app.post("/api/posts", async (req, res) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(req.headers),
-  });
-  if (!session) {
-    res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const [createdPost] = await db
-    .insert(post)
-    .values({
-      ...req.body,
-      id: uuidv7(),
-      slug: req.body.title.toLowerCase().replace(" ", "-"),
-      userId: session?.user.id,
-    })
-    .returning();
-
-  if (!post) {
-    res.status(400).json({ error: "Failed to create the post" });
-  }
-
-  res.json({
-    post: createdPost,
-  });
-});
+app.use("/api/posts", postsRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
