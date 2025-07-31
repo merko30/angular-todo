@@ -1,0 +1,15 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="w-full mt-2">
+  <h4 class="font-medium">Your comment</h4>
+  <app-field [error]="error" name="comment">
+    <textarea
+      ngModel
+      name="comment"
+      id="comment-form"
+      rows="6"
+      class="input"
+    ></textarea>
+  </app-field>
+  <div class="flex justify-end w-full">
+    <app-button type="submit"> Create </app-button>
+  </div>
+</form>

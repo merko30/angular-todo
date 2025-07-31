@@ -2,7 +2,12 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { uuidv7 } from "uuidv7";
 import { db } from "../db";
-import { post, postTag, tag } from "../db/schema";
+import {
+  post as postTable,
+  postTag as postTagTable,
+  tag as tagTable,
+  comment as commentTable,
+} from "../db/schema";
 import { authMiddleware } from "../lib/middleware";
 import { eq, notInArray } from "drizzle-orm";
 
@@ -12,8 +17,6 @@ router.get("/", async (req: Request, res: Response) => {
   const result = await db.query.post.findMany({
     with: { tags: { with: { tag: true } } },
   });
-
-  console.log(result);
 
   res.status(200).json({
     posts: result,
@@ -26,17 +29,17 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
   const tagNames = tags.split(",").map((name: string) => name.trim());
 
   const createdTags = await db
-    .insert(tag)
+    .insert(tagTable)
     .values(tagNames.map((t: string) => ({ name: t })))
-    .onConflictDoNothing({ target: tag.name })
+    .onConflictDoNothing({ target: tagTable.name })
     .returning();
 
   const existingTags = await db
     .select()
-    .from(tag)
+    .from(tagTable)
     .where(
       notInArray(
-        tag.name,
+        tagTable.name,
         createdTags.map((t) => t.name)
       )
     );
@@ -46,7 +49,7 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
   console.log(postTags);
 
   const [createdPost] = await db
-    .insert(post)
+    .insert(postTable)
     .values({
       ...postFields,
       id: uuidv7(),
@@ -55,14 +58,14 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
     })
     .returning();
 
-  await db.insert(postTag).values(
+  await db.insert(postTagTable).values(
     postTags.map((t) => ({
       tagId: t.id,
       postId: createdPost.id,
     }))
   );
 
-  if (!post) {
+  if (!createdPost) {
     return res.status(400).json({ error: "Failed to create the post" });
   }
 
@@ -94,6 +97,31 @@ router.get("/:id", async (req: Request, res: Response) => {
 
   res.status(200).json({
     post: foundPost,
+  });
+});
+
+router.post("/:id", authMiddleware, async (req: Request, res: Response) => {
+  const { comment } = req.body;
+
+  const postId = req.params.id;
+
+  const userId = req.userId;
+
+  const [newComment] = await db
+    .insert(commentTable)
+    .values({
+      postId,
+      text: comment,
+      userId: userId!,
+    })
+    .returning();
+
+  if (!newComment) {
+    res.status(400).json({ error: "Failed to create the comment" });
+  }
+
+  res.status(201).json({
+    comment: newComment,
   });
 });
 

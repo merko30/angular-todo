@@ -3,6 +3,11 @@ export type Tag = {
   name: string;
 };
 
+export type Comment = {
+  id: number | string;
+  text: string;
+};
+
 export type Post = {
   id: number;
   title: string;

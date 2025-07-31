@@ -4,10 +4,11 @@ import { PostService } from '../post.service';
 import { Post } from '../types/post';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TagListComponent } from '../tag-list/tag-list.component';
+import { CommentFormComponent } from '../comment-form/comment-form.component';
 
 @Component({
   selector: 'app-post-detail',
-  imports: [TagListComponent],
+  imports: [TagListComponent, CommentFormComponent],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.css',
 })

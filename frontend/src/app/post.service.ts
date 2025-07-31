@@ -32,4 +32,17 @@ export class PostService {
       withCredentials: true,
     });
   }
+
+  createComment(
+    data: {
+      comment: string;
+    },
+    postId: string
+  ) {
+    return this.http.post<{ comment: Comment }>(
+      this.postURL + `/${postId}`,
+      data,
+      { withCredentials: true }
+    );
+  }
 }

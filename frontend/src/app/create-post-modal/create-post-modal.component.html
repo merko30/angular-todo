@@ -8,11 +8,7 @@
         placeholder="Enter post title"
         [error]="errors['title']"
       >
-        <input
-          ngModel
-          name="title"
-          class="w-full border border-gray-200 px-4 py-2 rounded-md"
-        />
+        <input ngModel name="title" class="input" />
       </app-field>
       <app-field
         label="Body"
@@ -20,12 +16,7 @@
         placeholder="Enter post body"
         [error]="errors['body']"
       >
-        <textarea
-          ngModel
-          name="body"
-          rows="5"
-          class="w-full border border-gray-200 px-4 py-2 rounded-md"
-        ></textarea>
+        <textarea ngModel name="body" rows="5" class="input"></textarea>
       </app-field>
       <app-field
         label="Tags"
@@ -33,11 +24,7 @@
         placeholder="Post tags"
         [error]="errors['tags']"
       >
-        <input
-          ngModel
-          name="tags"
-          class="w-full border border-gray-200 px-4 py-2 rounded-md"
-        />
+        <input ngModel name="tags" class="input" />
         <span class="text-gray-600 text-sm"
           >Separate tags by comma e.g health, fitness</span
         >
