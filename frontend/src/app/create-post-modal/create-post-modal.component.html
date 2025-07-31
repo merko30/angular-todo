@@ -16,7 +16,7 @@
         placeholder="Enter post body"
         [error]="errors['body']"
       >
-        <textarea ngModel name="body" rows="5" class="input"></textarea>
+        <div #editor></div>
       </app-field>
       <app-field
         label="Tags"

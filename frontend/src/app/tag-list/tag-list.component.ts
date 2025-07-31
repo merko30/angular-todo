@@ -13,6 +13,6 @@ export class TagListComponent {
   className = input<string>();
 
   get containerClass() {
-    return twMerge('flex gap-2 mt-2', this.className());
+    return twMerge('flex flex-wrap gap-2 mt-2', this.className());
   }
 }

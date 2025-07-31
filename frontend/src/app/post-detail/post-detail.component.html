@@ -8,7 +8,7 @@
     {{ post.subtitle }}
   </h3>
   }
-  <p class="text-lg">{{ post.body }}</p>
+  <p class="text-lg" [innerHTML]="post.body"></p>
   <app-comment-form
     (onCommentCreate)="onCommentCreate($event)"
     className="mb-4"

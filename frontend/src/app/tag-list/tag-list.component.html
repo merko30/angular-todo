@@ -1,5 +1,5 @@
 <ul [class]="containerClass">
-  @for (tag of tags(); track tag.tag.id) {
+  @for (tag of tags().slice(0,5); track tag.tag.id) {
   <li
     class="list-none p-1 bg-gray-100 rounded text-xs border border-primary/20"
   >

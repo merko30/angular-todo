@@ -22,6 +22,7 @@
     "@ngrx/store-devtools": "^19.2.1",
     "@tailwindcss/postcss": "^4.1.11",
     "postcss": "^8.5.6",
+    "quill": "^2.0.3",
     "rxjs": "^7.8.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
