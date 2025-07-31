@@ -11,6 +11,7 @@ import {
 } from './actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { ModalService } from '../../app/modal.service';
+import { Router } from '@angular/router';
 
 export const loadPostsEffect = createEffect(
   (actions$ = inject(Actions), postService = inject(PostService)) =>
@@ -43,7 +44,7 @@ export const createPostEffect = createEffect(
   (
     actions$ = inject(Actions),
     postService = inject(PostService),
-    modalService = inject(ModalService)
+    router = inject(Router)
   ) =>
     actions$.pipe(
       ofType(createPost.type),
@@ -51,11 +52,8 @@ export const createPostEffect = createEffect(
         const { type, ...data } = action;
 
         return postService.createPost(data).pipe(
-          map((data) => {
-            console.log(data);
-            return createPostSuccess({ post: data.post });
-          }),
-          tap(() => modalService.close()),
+          map((data) => createPostSuccess({ post: data.post })),
+          tap(({ post }) => router.navigate(['/posts', post.id])),
           catchError((error) => {
             return of(
               createPostFailure({

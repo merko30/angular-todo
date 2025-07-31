@@ -9,7 +9,7 @@ import {
   comment as commentTable,
 } from "../db/schema";
 import { authMiddleware } from "../lib/middleware";
-import { eq, notInArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 const router = Router();
 
@@ -26,27 +26,31 @@ router.get("/", async (req: Request, res: Response) => {
 router.post("/", authMiddleware, async (req: Request, res: Response) => {
   const { tags, ...postFields } = req.body;
 
-  const tagNames = tags.split(",").map((name: string) => name.trim());
+  const tagNames = tags
+    .split(",")
+    .map((name: string) => name.trim())
+    .filter((name: string) => name.length);
 
-  const createdTags = await db
-    .insert(tagTable)
-    .values(tagNames.map((t: string) => ({ name: t })))
-    .onConflictDoNothing({ target: tagTable.name })
-    .returning();
+  let createdTags: { id: number; name: string }[] = [];
+
+  if (tagNames.length) {
+    createdTags = await db
+      .insert(tagTable)
+      .values(tagNames.map((t: string) => ({ name: t })))
+      .onConflictDoNothing({ target: tagTable.name })
+      .returning();
+  }
+
+  const nonCreatedTagNames = tagNames.filter(
+    (name: string) => !createdTags.some((tag) => tag.name === name)
+  );
 
   const existingTags = await db
     .select()
     .from(tagTable)
-    .where(
-      notInArray(
-        tagTable.name,
-        createdTags.map((t) => t.name)
-      )
-    );
+    .where(inArray(tagTable.name, nonCreatedTagNames));
 
   const postTags = [...createdTags, ...existingTags];
-
-  console.log(postTags);
 
   const [createdPost] = await db
     .insert(postTable)
@@ -58,13 +62,14 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
     })
     .returning();
 
-  await db.insert(postTagTable).values(
-    postTags.map((t) => ({
-      tagId: t.id,
-      postId: createdPost.id,
-    }))
-  );
-
+  if (postTags.length) {
+    await db.insert(postTagTable).values(
+      postTags.map((t) => ({
+        tagId: t.id,
+        postId: createdPost.id,
+      }))
+    );
+  }
   if (!createdPost) {
     return res.status(400).json({ error: "Failed to create the post" });
   }
@@ -100,6 +105,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   });
 });
 
+// create comment
 router.post("/:id", authMiddleware, async (req: Request, res: Response) => {
   const { comment } = req.body;
 
