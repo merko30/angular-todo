@@ -7,15 +7,17 @@ import {
   postTag as postTagTable,
   tag as tagTable,
   comment as commentTable,
+  post,
 } from "../db/schema";
 import { authMiddleware } from "../lib/middleware";
-import { eq, inArray } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (_, res: Response) => {
   const result = await db.query.post.findMany({
     with: { tags: { with: { tag: true } } },
+    orderBy: [desc(post.createdAt)],
   });
 
   res.status(200).json({
