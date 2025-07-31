@@ -25,3 +25,15 @@ a {
 .input {
   @apply w-full border border-gray-200 px-4 py-2 rounded-md;
 }
+
+.ql-toolbar {
+  @apply rounded-t-md! border-gray-200!;
+}
+
+.ql-container {
+  @apply border-gray-200! rounded-b-md;
+}
+
+.ql-editor {
+  @apply min-h-64;
+}

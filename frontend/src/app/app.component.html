@@ -17,6 +17,11 @@
         >Register</a
       >
       } @if ((loggedIn$ | async) ) {
+      <a
+        routerLink="/posts/create"
+        class="text-primary hover:underline cursor-pointer"
+        >Create post</a
+      >
       <button
         (click)="logout()"
         class="text-primary hover:text-primary/90 border-0 bg-none"

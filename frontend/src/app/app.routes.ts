@@ -6,11 +6,17 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
 import { authGuard, nonAuthGuard } from './auth.guard';
+import { CreatePostComponent } from './create-post/create-post.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'posts/create',
+    component: CreatePostComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'posts/:id',

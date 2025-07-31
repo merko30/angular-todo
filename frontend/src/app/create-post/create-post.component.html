@@ -1,0 +1,33 @@
+<div class="pt-16 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-semibold mb-4">Create Post</h2>
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <app-field
+      label="Title"
+      name="title"
+      placeholder="Enter post title"
+      [error]="errors['title']"
+    >
+      <input ngModel name="title" class="input" />
+    </app-field>
+    <app-field
+      label="Body"
+      name="body"
+      placeholder="Enter post body"
+      [error]="errors['body']"
+    >
+      <div #editor></div>
+    </app-field>
+    <app-field
+      label="Tags"
+      name="tags"
+      placeholder="Post tags"
+      [error]="errors['tags']"
+    >
+      <input ngModel name="tags" class="input" />
+      <span class="text-gray-600 text-sm"
+        >Separate tags by comma e.g health, fitness</span
+      >
+    </app-field>
+    <app-button type="submit">Submit</app-button>
+  </form>
+</div>

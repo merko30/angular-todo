@@ -1,14 +1,13 @@
-import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import z from 'zod';
 import { Store } from '@ngrx/store';
-import quill from 'quill';
+import Quill from 'quill';
 
 import { FieldComponent } from '../field/field.component';
 import { ButtonComponent } from '../shared/button/button.component';
 import { AppState } from '../../store';
 import { createPost } from '../../store/posts/actions';
-import Quill from 'quill';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -25,12 +24,12 @@ const schema = z.object({
     ),
 });
 @Component({
-  selector: 'app-create-post-modal',
+  selector: 'app-create-post',
   imports: [FieldComponent, FormsModule, ButtonComponent],
-  templateUrl: './create-post-modal.component.html',
-  styleUrls: ['./create-post-modal.component.css'],
+  templateUrl: './create-post.component.html',
+  styleUrls: ['./create-post.component.css'],
 })
-export class CreatePostModalComponent {
+export class CreatePostComponent {
   errors: Record<string, string> = {};
 
   constructor(private store: Store<AppState>) {}

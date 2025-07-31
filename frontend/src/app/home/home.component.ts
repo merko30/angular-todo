@@ -1,11 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Post } from '../types/post';
 import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ModalHostComponent } from '../modal-host/modal-host.component';
-import { ModalService } from '../modal.service';
-import { CreatePostModalComponent } from '../create-post-modal/create-post-modal.component';
-import { ButtonComponent } from '../shared/button/button.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store';
 import { loadPosts } from '../../store/posts/actions';
@@ -15,31 +11,18 @@ import { PostCardComponent } from '../post-card/post-card.component';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [AsyncPipe, ModalHostComponent, ButtonComponent, PostCardComponent],
+  imports: [AsyncPipe, PostCardComponent],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   posts$: Observable<Post[]> = of([]);
   loggedIn$!: Observable<boolean>;
 
-  @ViewChild(ModalHostComponent) modalHost!: ModalHostComponent;
-
-  constructor(
-    private modalService: ModalService,
-    private store: Store<AppState>
-  ) {
+  constructor(private store: Store<AppState>) {
     this.posts$ = this.store.select((state) => state.posts.posts);
     this.loggedIn$ = this.store.select((state) => state.auth.loggedIn);
   }
 
   ngOnInit(): void {
     this.store.dispatch(loadPosts());
-  }
-
-  ngAfterViewInit(): void {
-    this.modalService.registerHost(this.modalHost);
-  }
-
-  openCreateModal() {
-    this.modalService.open(CreatePostModalComponent);
   }
 }
