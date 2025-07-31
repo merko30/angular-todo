@@ -138,7 +138,7 @@ export const postRelations = relations(post, ({ one, many }) => ({
     references: [user.id],
   }),
   comments: many(comment),
-  postTags: many(postTag),
+  tags: many(postTag),
 }));
 
 export const commentRelations = relations(comment, ({ one }) => ({

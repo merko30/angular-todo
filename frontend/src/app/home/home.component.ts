@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Post } from '../types/post';
 import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { ModalHostComponent } from '../modal-host/modal-host.component';
 import { ModalService } from '../modal.service';
 import { CreatePostModalComponent } from '../create-post-modal/create-post-modal.component';
@@ -10,12 +9,13 @@ import { ButtonComponent } from '../shared/button/button.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store';
 import { loadPosts } from '../../store/posts/actions';
+import { PostCardComponent } from '../post-card/post-card.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [AsyncPipe, RouterLink, ModalHostComponent, ButtonComponent],
+  imports: [AsyncPipe, ModalHostComponent, ButtonComponent, PostCardComponent],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   posts$: Observable<Post[]> = of([]);

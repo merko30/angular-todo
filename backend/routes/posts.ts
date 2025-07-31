@@ -10,7 +10,7 @@ const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
   const result = await db.query.post.findMany({
-    with: { postTags: { with: { tag: true } } },
+    with: { tags: { with: { tag: true } } },
   });
 
   console.log(result);
