@@ -11,6 +11,9 @@ import { createPost } from '../../store/posts/actions';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
+  subtitle: z
+    .string()
+    .max(100, 'Subtitle must contain less than 100 characters'),
   body: z.string().min(100, 'Body must contain at least 100 characters'),
   tags: z
     .string()

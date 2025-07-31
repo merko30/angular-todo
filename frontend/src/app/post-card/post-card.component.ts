@@ -12,4 +12,8 @@ import { TagListComponent } from '../tag-list/tag-list.component';
 })
 export class PostCardComponent {
   post = input.required<Post>();
+
+  get postBody() {
+    return this.post().body.replace(/<[^>]+>/g, '');
+  }
 }

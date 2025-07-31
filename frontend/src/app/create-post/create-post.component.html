@@ -10,6 +10,14 @@
       <input ngModel name="title" class="input" />
     </app-field>
     <app-field
+      label="Subtitle"
+      name="subtitle"
+      placeholder="Enter post subtitle"
+      [error]="errors['subtitle']"
+    >
+      <input ngModel name="subtitle" class="input" />
+    </app-field>
+    <app-field
       label="Body"
       name="body"
       placeholder="Enter post body"
