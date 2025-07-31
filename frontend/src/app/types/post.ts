@@ -1,18 +1,19 @@
 export type Tag = {
-  id: number | string;
+  id: number;
   name: string;
 };
 
 export type Comment = {
-  id: number | string;
+  id: number;
   text: string;
 };
 
 export type Post = {
-  id: number;
+  id: string;
   title: string;
   body: string;
   subtitle: string | null;
   slug: string;
   tags: { tag: Tag }[];
+  comments?: Comment[];
 };

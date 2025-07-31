@@ -1,4 +1,4 @@
-@if (post){
+@if (post$ | async; as post){
 <div class="max-w-3xl mx-auto">
   <img src="img.jpg" [alt]="post.slug" class="w-full min-h-96" />
   <h1 class="text-3xl font-semibold mb-4">{{ post.title }}</h1>
@@ -9,6 +9,10 @@
   </h3>
   }
   <p class="text-lg">{{ post.body }}</p>
-  <app-comment-form></app-comment-form>
+  <app-comment-form
+    (onCommentCreate)="onCommentCreate($event)"
+    className="mb-4"
+  ></app-comment-form>
+  <app-comment-list [comments]="post.comments"></app-comment-list>
 </div>
 }

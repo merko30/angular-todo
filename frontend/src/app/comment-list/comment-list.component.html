@@ -1,0 +1,7 @@
+<ul class="flex flex-col gap-2">
+  @for (comment of comments(); track comment.id) {
+  <li class="list-none p-2 bg-gray-100 rounded-sm">
+    {{ comment.text }}
+  </li>
+  }
+</ul>

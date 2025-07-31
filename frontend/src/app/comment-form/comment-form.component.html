@@ -1,4 +1,4 @@
-<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="w-full mt-2">
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" [class]="containerClass">
   <h4 class="font-medium">Your comment</h4>
   <app-field [error]="error" name="comment">
     <textarea
