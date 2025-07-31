@@ -17,7 +17,7 @@ export class PostService {
     return this.http.get<{ posts: Post[] }>(this.postURL);
   }
 
-  loadPost(id: string): Observable<Post> {
+  loadPost(id: string): Observable<{ post: Post }> {
     return this.http
       .get<Post>(this.postURL + `/${id}`)
       .pipe(catchError((error) => of(error)));

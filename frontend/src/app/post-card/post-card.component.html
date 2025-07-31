@@ -6,15 +6,7 @@
         {{ post().title }}
       </h2>
       <p class="text-sm text-gray-500 line-clamp-2">{{ post().body }}</p>
-      <ul class="flex gap-2 mt-2">
-        @for (tag of post().tags; track tag.tag.id) {
-        <li
-          class="list-none p-1 bg-gray-100 rounded text-xs border border-primary/20"
-        >
-          {{ tag.tag.name }}
-        </li>
-        }
-      </ul>
+      <app-tag-list [tags]="post().tags"></app-tag-list>
     </div>
   </a>
 </li>
