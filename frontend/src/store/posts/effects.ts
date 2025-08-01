@@ -8,9 +8,11 @@ import {
   createPost,
   createPostFailure,
   createPostSuccess,
+  loadTags,
+  loadTagsFailure,
+  loadTagsSuccess,
 } from './actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { ModalService } from '../../app/modal.service';
 import { Router } from '@angular/router';
 
 export const loadPostsEffect = createEffect(
@@ -58,6 +60,33 @@ export const createPostEffect = createEffect(
             return of(
               createPostFailure({
                 error: error?.message ?? 'Failed to create the post',
+              })
+            );
+          })
+        );
+      })
+    ),
+  { functional: true }
+);
+
+export const loadTagsEffect = createEffect(
+  (actions$ = inject(Actions), postService = inject(PostService)) =>
+    actions$.pipe(
+      ofType(loadTags.type),
+      switchMap(() => {
+        console.log('called');
+
+        return postService.loadTags().pipe(
+          map((data) => {
+            console.log(data);
+            return loadTagsSuccess({ tags: data.tags });
+          }),
+          catchError((error) => {
+            console.log(error);
+
+            return of(
+              loadTagsFailure({
+                error: error?.message ?? 'Failed to load posts',
               })
             );
           })

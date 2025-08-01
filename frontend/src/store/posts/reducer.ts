@@ -7,12 +7,16 @@ import {
   createPost,
   createPostFailure,
   createPostSuccess,
+  loadTags,
+  loadTagsSuccess,
+  loadTagsFailure,
 } from './actions';
 
 const initialState: State = {
   posts: [],
   loading: false,
   error: null,
+  tags: [],
 };
 
 export const reducer = createReducer(
@@ -41,6 +45,20 @@ export const reducer = createReducer(
     posts: [action.post, ...state.posts],
   })),
   on(createPostFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  })),
+  on(loadTags, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(loadTagsSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    tags: action.tags,
+  })),
+  on(loadTagsFailure, (state, action) => ({
     ...state,
     loading: false,
     error: action.error,

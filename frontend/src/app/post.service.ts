@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Post } from './types/post';
+import { Post, Tag } from './types/post';
 import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 
 @Injectable({
@@ -15,6 +15,10 @@ export class PostService {
 
   loadPosts() {
     return this.http.get<{ posts: Post[] }>(this.postURL);
+  }
+
+  loadTags() {
+    return this.http.get<{ tags: Tag[] }>('http://localhost:3005/api/tags');
   }
 
   loadPost(id: string): Observable<{ post: Post }> {

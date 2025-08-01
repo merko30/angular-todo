@@ -5,6 +5,7 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 
 import { auth } from "./lib/auth";
 import postsRouter from "./routes/posts";
+import tagsRouter from "./routes/tags";
 
 const app = express();
 const port = 3005;
@@ -33,6 +34,7 @@ app.use(express.json());
 app.get("/", (_, res) => res.json({ ok: true }));
 
 app.use("/api/posts", postsRouter);
+app.use("/api/tags", tagsRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

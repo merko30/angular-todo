@@ -6,8 +6,8 @@
   <h3 class="text-lg text-gray-500">
     {{ post.subtitle }}
   </h3>
-  } @if (post.tags.length) {
-  <app-tag-list [tags]="post.tags" className="my-4"></app-tag-list>
+  } @if (postTags|async; as tags) {
+  <app-tag-list [tags]="tags" className="my-4"></app-tag-list>
   }
   <p [innerHTML]="post.body"></p>
   <app-comment-form

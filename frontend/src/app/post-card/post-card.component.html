@@ -1,4 +1,4 @@
-<li class="bg-gray-50 rounded-md">
+<li class="bg-gray-50 rounded-md min-h-full flex items-stretch">
   <a [routerLink]="['/posts', post().id]">
     <img src="/img.jpg" [alt]="post().title" class="min-h-56" />
     <div class="p-4">
@@ -9,7 +9,6 @@
       <p class="text-xs text-gray-500 line-clamp-2">
         {{ post().subtitle ?? postBody }}
       </p>
-      <app-tag-list [tags]="post().tags"></app-tag-list>
     </div>
   </a>
 </li>
